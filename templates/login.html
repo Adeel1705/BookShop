@@ -1,6 +1,6 @@
 {% extends "authBase.html" %}
 
-{% block title %} Login Sam Shoes{% endblock title %}
+{% block title %} Shirt Store | Login{% endblock title %}
 
 {% block style %}
 {% load static %}
@@ -15,7 +15,7 @@
             <div class="card shadow-lg border-0 rounded-3">
                 <div class="card-body p-4">
                     <div class="text-center mb-4">
-                        <img src="{% static 'images/logo.png' %}" alt="Logo" class="img-fluid" style="max-height: 100px;" />
+                        <img src="{% static 'images/log.jpg' %}" alt="Logo" class="img-fluid" style="max-height: 100px;" />
                     </div>
                     <h4 class="text-center mb-4">Welcome Back!</h4>
                     <form action="{% url 'login' %}" method="post">
