@@ -1,75 +1,86 @@
 {% extends "base.html" %}
 
-
-
-
-{% block title%} Home Page {% endblock title%}
-
+{% block title %}Your Cart{% endblock title %}
 
 {% block content %}
+<div class="container py-5">
+  <h1 class="text-center mb-5">Your Cart</h1>
 
-<h1>Your Cart</h1>
-
-{% if cart_items %}
-    <ul>
+  {% if cart_items %}
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <ul class="list-group mb-4">
         {% for item in cart_items %}
-            <li>
-                <P> {{item.id}}</P>
-                <button class="btn btn-danger remove-from-cart" data-product-id="{{ item.product.id }}">Remove</button>
-            </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            <h5>{{ item.product.name }}</h5>
+            <p class="mb-1 text-muted">Quantity: {{ item.quantity }}</p>
+            <p class="mb-0 text-muted">Price: ${{ item.product.price }}</p>
+          </div>
+          <button
+            class="btn btn-danger remove-from-cart"
+            data-product-id="{{ item.product.id }}"
+          >
+            Remove
+          </button>
+        </li>
         {% endfor %}
-    </ul>
+      </ul>
+    </div>
+  </div>
 
-    <hr>
-    <h3>Total Price: ${{ total_price }}</h3>
-    <a href="{% url 'checkout' %}" class="btn btn-success">Proceed to Checkout</a>
-{% else %}
-    <p>Your cart is empty.</p>
-{% endif %}
+  <div class="row justify-content-center mt-4">
+    <div class="col-md-6">
+      <div
+        class="bg-light border rounded py-4 text-center shadow-sm"
+        style="font-size: 1.5rem;"
+      >
+        <p class="mb-2 text-uppercase text-muted">Total Price</p>
+        <p class="mb-0 text-primary fw-bold" style="font-size: 2rem;">
+          ${{ total_price }}
+        </p>
+      </div>
+    </div>
+  </div>
 
-
-
-
-
-{% endblock content%}
-
+  <div class="row justify-content-center mt-4">
+    <div class="col-md-6 text-center">
+      <a href="{% url 'checkout' %}" class="btn btn-success btn-lg w-100">
+        Proceed to Checkout
+      </a>
+    </div>
+  </div>
+  {% else %}
+  <p class="text-center text-muted">Your cart is empty.</p>
+  {% endif %}
+</div>
+{% endblock content %}
 
 <script>
-    // Remove from Cart functionality
-    document.querySelectorAll('.remove-from-cart').forEach(button => {
-        button.addEventListener('click', (e) => {
-            const productId = e.target.dataset.productId;
-            removeFromCart(productId);
-        });
+  // Remove from Cart functionality
+  document.querySelectorAll(".remove-from-cart").forEach((button) => {
+    button.addEventListener("click", (e) => {
+      const productId = e.target.dataset.productId;
+      removeFromCart(productId);
     });
+  });
 
-    function removeFromCart(productId) {
-        fetch('/remove-from-cart/', {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': '{{ csrf_token }}',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                'product_id': productId
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            location.reload(); // Reload the page to update the cart
-            console.log(data.message);
-        })
-        .catch(error => console.error('Error:', error));
-    }
+  function removeFromCart(productId) {
+    fetch("/remove-from-cart/", {
+      method: "POST",
+      headers: {
+        "X-CSRFToken": "{{ csrf_token }}",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        product_id: productId,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        location.reload(); // Reload the page to update the cart
+        console.log(data.message);
+      })
+      .catch((error) => console.error("Error:", error));
+  }
 </script>
-
-
-
-
-
-
-
-
-    
-</body>
-</html>

@@ -1,7 +1,7 @@
 #footer{
   min-height: 30vh;
   max-height: fit-content;
-  background-color: rgb(80, 73, 25);
+  background-color: black;
 }
 #footer a {
   text-decoration: none;
